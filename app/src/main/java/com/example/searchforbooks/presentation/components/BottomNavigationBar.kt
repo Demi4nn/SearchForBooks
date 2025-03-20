@@ -20,7 +20,6 @@ fun BottomNavigationBar(navController: NavController) {
         items.forEach { item ->
             NavigationBarItem(
                 icon = { Icon(painterResource(id = item.icon), contentDescription = item.title) },
-                //label = { Text(text = item.title) }, удалить и обработать правильно!!!
                 selected = currentRoute == item.route,
                 onClick = {
                     if (currentRoute != item.route) {

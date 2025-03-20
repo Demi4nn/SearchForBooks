@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.searchforbooks.data.utils.OperationResult
+import com.example.searchforbooks.domain.models.BookModel
 import com.example.searchforbooks.domain.usecase.GetAllSearchBooksUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -61,6 +62,15 @@ class SearchViewModel @Inject constructor(
             } catch (e: Exception) {
                 searchScreenState = SearchScreenState.Error("Ошибка выполнения запроса, попробуйте повторить")
             }
+        }
+    }
+
+    fun getBookById(bookId: String): BookModel? {
+        val currentState = searchScreenState
+        return if (currentState is SearchScreenState.Success) {
+            currentState.books.find { it.id == bookId }
+        } else {
+            null
         }
     }
 

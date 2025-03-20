@@ -12,6 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.searchforbooks.presentation.components.BottomNavigationBar
+import com.example.searchforbooks.presentation.screens.bookDetails.BookDetailScreen
 import com.example.searchforbooks.presentation.screens.favorites.FavoritesScreen
 import com.example.searchforbooks.presentation.screens.search.SearchScreen
 
@@ -19,7 +20,8 @@ import com.example.searchforbooks.presentation.screens.search.SearchScreen
 @Composable
 fun AppNavigationGraph(
     navController: NavHostController,
-    modifier: Modifier = Modifier) {
+    modifier: Modifier = Modifier
+) {
     Scaffold(
         bottomBar = { BottomNavigationBar(navController = navController) }
     ) { innerPadding ->
@@ -29,10 +31,19 @@ fun AppNavigationGraph(
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(route = BottomNavItem.Search.route) {
-                SearchScreen()
+                SearchScreen(navController = navController)
             }
             composable(route = BottomNavItem.Favorites.route) {
                 FavoritesScreen()
+            }
+            composable(
+                route = "book_detail_screen/{bookId}",
+                arguments = listOf(navArgument("bookId") { type = NavType.StringType })
+            ) { backStackEntry ->
+                val bookId = backStackEntry.arguments?.getString("bookId") ?: ""
+                BookDetailScreen(bookId = bookId,
+                    onBackClick = { navController.popBackStack() }
+                )
             }
         }
     }
