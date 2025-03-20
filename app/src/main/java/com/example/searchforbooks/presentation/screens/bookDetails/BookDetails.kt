@@ -21,6 +21,7 @@ import com.example.searchforbooks.presentation.screens.search.SearchViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
+import android.util.Log
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -30,8 +31,12 @@ fun BookDetailScreen(
     searchViewModel: SearchViewModel = hiltViewModel(),
     onBackClick: () -> Unit
 ) {
-    val book = searchViewModel.getBookById(bookId) // Получаем книгу по ID
-    val context = LocalContext.current
+
+    Log.d("BookDetailScreen", "Открываем экран книги с ID: $bookId")
+    //val book = searchViewModel.selectedBook
+    val book = searchViewModel.getBookById(bookId)  // Ищем книгу по ID
+
+    Log.d("BookDetailScreen", "Полученная книга: ${book?.title ?: "null"}")
 
     Scaffold(
         topBar = {

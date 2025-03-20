@@ -13,6 +13,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import android.util.Log
 
 
 @HiltViewModel
@@ -65,13 +66,26 @@ class SearchViewModel @Inject constructor(
         }
     }
 
+    var selectedBook by mutableStateOf<BookModel?>(null)
+        private set
+
+    fun onBookSelected(book: BookModel) {
+        selectedBook = book
+        Log.d("SearchViewModel", "sВыбрана книга: ${book.title}, ID: ${book.id}")
+    }
+
     fun getBookById(bookId: String): BookModel? {
-        val currentState = searchScreenState
-        return if (currentState is SearchScreenState.Success) {
-            currentState.books.find { it.id == bookId }
+        Log.d("SearchViewModel", "Метод getBookById вызван с ID: $bookId")
+        val books = if (searchScreenState is SearchScreenState.Success) {
+            (searchScreenState as SearchScreenState.Success).books
         } else {
-            null
+            emptyList()
         }
+
+        val book = books.find { it.id == bookId }
+
+        Log.d("SearchViewModel", "Поиск книги с ID: $bookId, найдено: ${book?.title ?: "НЕ НАЙДЕНО"}")
+        return book
     }
 
     fun onRetrySearch() {

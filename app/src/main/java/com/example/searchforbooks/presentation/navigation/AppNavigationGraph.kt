@@ -41,7 +41,8 @@ fun AppNavigationGraph(
                 arguments = listOf(navArgument("bookId") { type = NavType.StringType })
             ) { backStackEntry ->
                 val bookId = backStackEntry.arguments?.getString("bookId") ?: ""
-                BookDetailScreen(bookId = bookId,
+                BookDetailScreen(
+                    bookId = bookId,
                     onBackClick = { navController.popBackStack() }
                 )
             }

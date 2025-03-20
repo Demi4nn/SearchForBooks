@@ -41,6 +41,7 @@ import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
 import com.example.searchforbooks.R
 import com.example.searchforbooks.domain.models.BookModel
+import android.util.Log
 
 @Composable
 fun SearchScreen(
@@ -141,7 +142,7 @@ fun SearchScreen(
     }
 }
 @Composable
-fun BookListView(books: List<BookModel>, navController: NavController) {
+fun BookListView(books: List<BookModel>, navController: NavController, searchViewModel: SearchViewModel = hiltViewModel()) {
     // Используем LazyVerticalGrid для отображения книг в 2 столбца
     LazyVerticalGrid(
         columns = GridCells.Fixed(2), // Указываем, что 2 элемента в ряду
@@ -156,7 +157,7 @@ fun BookListView(books: List<BookModel>, navController: NavController) {
 }
 
 @Composable
-fun BookItemView(book: BookModel, navController: NavController) {
+fun BookItemView(book: BookModel, navController: NavController, searchViewModel: SearchViewModel = hiltViewModel()) {
 
 
 
@@ -166,6 +167,9 @@ fun BookItemView(book: BookModel, navController: NavController) {
                 .fillMaxHeight()
                 .padding(16.dp)
                 .clickable {
+                    searchViewModel.onBookSelected(book)
+
+                    Log.d("BookItemView", "Нажата книга: ${book.title}, ID: ${book.id}")
                     // При клике переходим на экран с деталями книги
                     navController.navigate("book_detail_screen/${book.id}")
                 },
